@@ -1,0 +1,43 @@
+service: import-service
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+  stage: sat
+  region: us-east-1
+
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:*"
+          Resource: "arn:aws:s3:::shop-product-files/*"
+
+package:
+    individually: true
+
+plugins:
+  - serverless-webpack
+
+functions:
+  importProductsFile:
+    handler: ./functions/import-products-file/handler.importProductsFile
+
+    events:
+      - httpApi:
+          path: /import
+          method: get
+
+  importFileParser:
+    handler: ./functions/import-file-parser/handler.importFileParser
+
+    events:
+      - s3:
+          bucket: shop-product-files
+          event: s3:ObjectCreated:*
+          rules: 
+              - prefix: uploaded/
+          existing: true
