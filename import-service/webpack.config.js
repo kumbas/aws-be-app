@@ -1,21 +1,24 @@
 const path = require('path');
 const slsw = require('serverless-webpack');
-const { IgnorePlugin } = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    entry: slsw.lib.entries,
-    target: 'node',
-    stats: 'minimal',
+    context: __dirname,
     mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
+    entry: slsw.lib.entries,
+    devtool: slsw.lib.webpack.isLocal ? 'cheap-module-eval-source-map' : 'source-map',
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.mjs', '.json'],
+        symlinks: false,
+        cacheWithContext: false,
     },
     output: {
-        library: {
-            type: 'commonjs2',
-        },
+        libraryTarget: 'commonjs2',
         path: path.join(__dirname, '.webpack'),
         filename: '[name].js',
     },
-    plugins: [new IgnorePlugin({ resourceRegExp: /^pg-native$/ })],
+    target: 'node',
+    externals: [
+        nodeExternals()
+    ]
 };
