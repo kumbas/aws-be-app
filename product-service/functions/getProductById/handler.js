@@ -1,5 +1,5 @@
-import { getById } from '../../utils/db-client';
-import { HEADERS } from '../../utils/constants';
+import { getById } from '../../utils/db-client.js';
+import { HEADERS } from '../../utils/constants.js';
 
 export const getProductById = async (event) => {
 	console.log('getProductById lambda event:', JSON.stringify(event));

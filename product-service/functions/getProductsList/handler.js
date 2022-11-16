@@ -1,5 +1,5 @@
-import { getAll } from '../../utils/db-client';
-import { HEADERS } from '../../utils/constants';
+import { getAll } from '../../utils/db-client.js';
+import { HEADERS } from '../../utils/constants.js';
 
 export const getProductsList = async (event) => {
 	console.log('getProductsList lambda event:', JSON.stringify(event));

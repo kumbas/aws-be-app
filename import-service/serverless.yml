@@ -14,6 +14,10 @@ provider:
       Action:
         - s3:*
       Resource: arn:aws:s3:::shop-product-files/*
+    - Effect: Allow
+      Action:
+        - sqs:SendMessage
+      Resource: arn:aws:sqs:us-east-1:090571928722:create-product-queue
 
 plugins:
   - serverless-webpack
