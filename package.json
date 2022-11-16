@@ -11,5 +11,9 @@
     "url": "https://github.com/kumbas/aws-be-app"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@middy/http-error-handler": "^3.6.2",
+    "@middy/validator": "^3.6.2"
+  }
 }

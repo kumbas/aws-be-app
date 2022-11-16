@@ -1,0 +1,8 @@
+{
+    "headers": {
+        "Content-Type": "text/csv"
+    },
+    "PathParams": {
+        "name": "product.scv"
+    }
+}
