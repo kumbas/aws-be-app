@@ -1,48 +1,32 @@
-'use strict';
-import AWS from 'aws-sdk';
+import { S3 } from 'aws-sdk';
+import { HEADERS, BUCKET_NAME, FOLDER_PATH } from '../../utils/constants.js';
 
-const BUCKET_NAME = 'shop-product-files';
-const BUCKET_CSV_FOLDER = 'uploaded';
+const s3 = new S3({
+    region: 'eu-west-1',
+});
+const BUCKET = BUCKET_NAME;
+const BUCKET_FOLDER_PATH = FOLDER_PATH;
 
 export const importProductsFile = async (event) => {
-    console.log(
-        'Lambda start: importProductsFile:',
-        event,
-    );
-
-    const response = {
-        statusCode: 200,
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-        },
-    };
-
     try {
-        const fileName = event?.queryStringParameters?.name;
-        const s3 = new AWS.S3({
-            region: 'us-east-1',
-        });
-        const filePath = `${BUCKET_CSV_FOLDER}/${fileName}`;
-
+        const { queryStringParameters: { name } } = event;
         const params = {
-            Bucket: BUCKET_NAME,
-            Key: filePath,
-            Expires: 60,
-            ContentType: 'text/csv',
-        };
-
+            Bucket: BUCKET,
+            Key: `${BUCKET_FOLDER_PATH}/${name}`,
+            ContentType: 'text/csv'
+        }
         const signedUrl = await s3.getSignedUrlPromise('putObject', params);
-        response.body = signedUrl;
 
-        return response;
+        return {
+            statusCode: 200,
+            headers: HEADERS,
+            body: JSON.stringify(signedUrl)
+        };
     } catch (err) {
-        console.error('error', err);
-
-        response.statusCode = 500;
-        response.body = JSON.stringify({
-            message: 'Internal error',
-        });
-
-        return response;
+        return {
+            statusCode: 400,
+            headers: HEADERS,
+            body: JSON.stringify(err)
+        }
     }
 };
