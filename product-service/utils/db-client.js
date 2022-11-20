@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 
-import { PRODUCTS_TABLE_NAME, STOCKS_TABLE_NAME } from './constants';
-import { v4 as uuidv4 } from 'uuid';
+import { PRODUCTS_TABLE_NAME, STOCKS_TABLE_NAME } from './constants.js';
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
@@ -40,7 +39,7 @@ export async function getById(productId) {
 }
 
 export async function create(payload) {
-    const newProductId = uuidv4();
+    const newProductId = "id" + Math.random().toString(16).slice(2);
     const productsDbParams = {
         TableName: PRODUCTS_TABLE_NAME,
         Item: {

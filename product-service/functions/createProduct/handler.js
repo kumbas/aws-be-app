@@ -1,5 +1,5 @@
-import { create } from '../../utils/db-client';
-import { HEADERS } from '../../utils/constants';
+import { create } from '../../utils/db-client.js';
+import { HEADERS } from '../../utils/constants.js';
 
 function validatePrice(price) {
     if (typeof price !== 'number' || price <= 0) {
@@ -42,8 +42,8 @@ function validatePayload(payload) {
     validatePrice(price);
     validateCount(count);
     validateTitle(title);
-    validateImg(img)
     validateDescription(description);
+    validateImg(img)
 }
 
 export const createProduct = async (event) => {

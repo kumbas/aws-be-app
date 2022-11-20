@@ -1,8 +1,8 @@
 import { S3 } from 'aws-sdk';
-import { HEADERS, BUCKET_NAME, FOLDER_PATH } from '../../utils/constants.js';
+import { HEADERS, BUCKET_NAME, FOLDER_PATH, REGION } from '../../utils/constants.js';
 
 const s3 = new S3({
-    region: 'eu-west-1',
+    region: REGION,
 });
 const BUCKET = BUCKET_NAME;
 const BUCKET_FOLDER_PATH = FOLDER_PATH;

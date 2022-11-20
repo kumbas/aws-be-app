@@ -20,6 +20,16 @@ provider:
         - dynamodb:PutItem
         - dynamodb:Query
       Resource: arn:aws:dynamodb:us-east-1:090571928722:table/stocks
+    - Effect: Allow
+      Action:
+        - sqs:ReceiveMessage
+      Resource:
+        - Fn::GetAtt: [ SQSQueue, Arn ]
+    - Effect: Allow
+      Action:
+        - sns:*
+      Resource:
+        Ref: SNSTopic
 
   stage: sat
   region: us-east-1
@@ -58,3 +68,31 @@ functions:
           path: products
           method: post
           cors: true
+
+  catalogBatchProcess:
+    handler: ./functions/catalogBatchProcess/handler.catalogBatchProcess
+    events:
+      - sqs:
+          batchSize: 5
+          arn:
+            Fn::GetAtt:
+              - SQSQueue
+              - Arn
+
+resources:
+  Resources:
+    SQSQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: create-product-queue
+    SNSTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: create-product-topic
+    SNSSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        Endpoint: superbanger5000@gmail.com
+        TopicArn:
+          Ref: SNSTopic
