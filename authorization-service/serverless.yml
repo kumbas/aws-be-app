@@ -1,0 +1,21 @@
+service: authorization-service
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  stage: sat
+
+plugins:
+  - serverless-webpack
+  - serverless-dotenv-plugin
+
+custom:
+  webpack:
+    webpackConfig: './webpack.config.cjs'
+
+functions:
+  basicAuthorizer:
+    handler: ./functions/basic-authorizer/handler.basicAuthorizer
