@@ -38,6 +38,11 @@ functions:
             parameters:
               querystrings:
                 name: true
+          authorizer:
+            arn: arn:aws:lambda:us-east-1:090571928722:function:authorization-service-sat-basicAuthorizer
+            type: TOKEN
+            resultTtlInSeconds: 0
+            identityValidationExpression: Basic (.*)
 
   importFileParser:
     handler: ./functions/import-file-parser/handler.importFileParser
